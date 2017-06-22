@@ -23,15 +23,38 @@ import org.apache.maven.plugin.logging.Log;
  */
 public class FileSystemWatcher {
 
-    private final WatchService watcher;
-
-    private final HashMap<WatchKey, Path> keys;
-
-    private final FileRegister fileRegister;
-
+    /**
+     * The Maven logger.
+     */
     private final Log mavenLogger;
 
+    /**
+     * The Java Object watching the file system.
+     */
+    private final WatchService watcher;
 
+    /**
+     * Data structure help to retrieve easily {@link Path} object from file system event (call WatchKey).
+     */
+    private final HashMap<WatchKey, Path> keys;
+
+    /**
+     * The library adding file to the watching file set.
+     */
+    private final FileRegister fileRegister;
+
+    /**
+     * Determine whether or not the daemon is running.
+     */
+    private boolean isRunning;
+
+
+    /**
+     * Initializes this watcher with a Maven plug-in logger.
+     *
+     * @param logger
+     *               The logger of Maven.
+     */
     public FileSystemWatcher(Log logger) {
         this.mavenLogger = logger;
 
@@ -39,30 +62,79 @@ public class FileSystemWatcher {
         this.watcher = this.initWatcherService();
 
         this.fileRegister = new FileRegister(watcher, keys);
+
+        this.isRunning = false;
     }
 
 
+    /**
+     * Starts the file system watcher.
+     */
     public void startWatching() {
-        while (true) {
-            // wait for key to be signalled
-            WatchKey key = this.getKeyOfUpdatedFile();
+        if (!this.isRunning) {
 
-            Path current = keys.get(key);
-            if (this.isRegisteredKey(current)) {
-                for (WatchEvent<?> event : key.pollEvents()) {
-                    Path child = this.getChangedChild(current, event);
+            this.isRunning = true;
 
-                    // print out event
-                    System.out.format("%s: %s\n", event.kind().name(), child);
+            while (this.isRunning) {
+                // wait for key to be signalled
+                WatchKey key = this.getKeyOfUpdatedFile();
 
-                    this.addCreatedFiles(event, child);
-                }
+                Path current = keys.get(key);
+                if (this.isRegisteredKey(current)) {
+                    for (WatchEvent<?> event : key.pollEvents()) {
+                        Path child = this.getChangedChild(current, event);
 
-                if (this.isFileRemoved(key)) {
-                    this.removeDeletedFileFromWatcher(key);
+                        // print out event
+                        System.out.format("%s: %s\n", event.kind().name(), child);
+
+                        this.addCreatedFiles(event, child);
+                    }
+
+                    if (this.isFileRemoved(key)) {
+                        this.removeDeletedFileFromWatcher(key);
+                    }
                 }
             }
         }
+    }
+
+
+    /**
+     * Stops this watching service.
+     */
+    public void stopWatching() {
+        this.isRunning = false;
+    }
+
+
+    /**
+     * Adds the specified path to the watching file set.
+     *
+     * @param path
+     *             The path representation of the file or folder to watch.
+     */
+    public void watch(Path path) {
+        try {
+            this.fileRegister.registerPathInWatcherRecursively(path);
+        }
+        catch (IOException ex) {
+            this.mavenLogger.error("Impossible to add the specified path to the watcher", ex);
+        }
+    }
+
+
+    /**
+     * Adds the specified file or folder to the watching file set.
+     *
+     * @param filePath
+     *                 The absolute or relative path to watch.
+     *
+     * @see FileSystemWatcher#watch(java.nio.file.Path)
+     */
+    public void watch(String filePath) {
+        Path path = Paths.get(filePath);
+
+        this.watch(path);
     }
 
 
@@ -131,24 +203,7 @@ public class FileSystemWatcher {
     }
 
 
-    public void removeDeletedFileFromWatcher(WatchKey key) {
+    private void removeDeletedFileFromWatcher(WatchKey key) {
         keys.remove(key);
-    }
-
-
-    public void watch(String filePath) {
-        Path path = Paths.get(filePath);
-
-        this.watch(path);
-    }
-
-
-    public void watch(Path path) {
-        try {
-            this.fileRegister.registerPathInWatcherRecursively(path);
-        }
-        catch (IOException ex) {
-            this.mavenLogger.error("Impossible to add the specified path to the watcher", ex);
-        }
     }
 }
