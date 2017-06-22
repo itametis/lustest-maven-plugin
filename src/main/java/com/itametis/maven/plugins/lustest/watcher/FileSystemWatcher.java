@@ -85,6 +85,7 @@ public class FileSystemWatcher {
     }
 
 
+    @SuppressWarnings("UnusedAssignment")
     private WatchKey getKeyOfUpdatedFile() {
         WatchKey key;
         try {
