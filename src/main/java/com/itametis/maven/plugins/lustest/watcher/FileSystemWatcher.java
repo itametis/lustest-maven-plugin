@@ -164,9 +164,7 @@ public class FileSystemWatcher {
             key = watcher.take();
         }
         catch (InterruptedException ex) {
-            key = null;
-            this.mavenLogger.error("Impossible to watch the file system. Plugin has to close", ex);
-            System.exit(0);
+            key = this.stopPlugin("Impossible to get event from the file system", ex);
         }
 
         return key;
@@ -180,13 +178,7 @@ public class FileSystemWatcher {
             result = FileSystems.getDefault().newWatchService();
         }
         catch (IOException ex) {
-            this.mavenLogger.error("Impossible to get the File System. Lustest has to stop", ex);
-            result = null;
-        }
-
-        if (result == null) {
-            this.mavenLogger.error("Lustest is stopped");
-            System.exit(0);
+            result = this.stopPlugin("Impossible to watch the File System", ex);
         }
 
         return result;
@@ -205,5 +197,14 @@ public class FileSystemWatcher {
 
     private void removeDeletedFileFromWatcher(WatchKey key) {
         keys.remove(key);
+    }
+
+
+    private <T> T stopPlugin(String message, Throwable throwable) {
+        this.mavenLogger.error(message, throwable);
+        this.mavenLogger.error("Lustest is stopped");
+
+        System.exit(1);
+        return null;
     }
 }

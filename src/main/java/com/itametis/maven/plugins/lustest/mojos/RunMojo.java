@@ -22,6 +22,8 @@ public class RunMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-
+//        FileSystemWatcher watcher = new FileSystemWatcher(super.getLog());
+//        watcher.watch("./src");
+//        watcher.startWatching();
     }
 }
