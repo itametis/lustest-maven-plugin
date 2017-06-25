@@ -18,6 +18,7 @@ import org.apache.maven.plugin.logging.Log;
 
 
 /**
+ * The class that watch the file system.
  *
  * @author ITAMETIS ©
  */
