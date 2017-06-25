@@ -4,6 +4,9 @@
  */
 package com.itametis.maven.plugins.lustest.mojos;
 
+import com.itametis.maven.plugins.lustest.task.SourceCompiler;
+import com.itametis.maven.plugins.lustest.task.TestCompiler;
+import com.itametis.maven.plugins.lustest.task.TestRunner;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.BuildPluginManager;
@@ -15,17 +18,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-
-import static org.twdata.maven.mojoexecutor.MojoExecutor.artifactId;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.element;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.goal;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.groupId;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.name;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.plugin;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.version;
 
 
 /**
@@ -41,6 +33,15 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.version;
 )
 public class RunMojo extends AbstractMojo {
 
+    @Parameter
+    private String sourceEncoding;
+
+    @Parameter
+    private String mavenCompilerVersion;
+
+    @Parameter
+    private String mavenSurefireVersion;
+
     @Parameter(defaultValue = "${project}", readonly = true)
     private MavenProject mavenProject;
 
@@ -53,90 +54,13 @@ public class RunMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if (mavenProject == null) {
-            System.out.println("PROJECT NULL");
-        }
-        else {
-            System.out.println("OK");
-        }
+        SourceCompiler sourceCompiler = new SourceCompiler(this.mavenSession, this.pluginManager, this.sourceEncoding, this.mavenCompilerVersion);
+        TestCompiler testCompiler = new TestCompiler(this.mavenSession, this.pluginManager, this.sourceEncoding, this.mavenCompilerVersion);
+        TestRunner runner = new TestRunner(this.mavenSession, this.pluginManager, this.mavenSurefireVersion);
 
-        if (mavenSession == null) {
-            System.out.println("SESSION NULL");
-        }
-        else {
-            System.out.println("OK");
-        }
-
-        if (pluginManager == null) {
-            System.out.println("MANAGER NULL");
-        }
-        else {
-            System.out.println("OK");
-        }
-
-        executeMojo(
-            plugin(
-                groupId("org.apache.maven.plugins"),
-                artifactId("maven-compiler-plugin"),
-                version("3.6.1")
-            ),
-            goal("compile"),
-            configuration(
-                element(name("encoding"), "UTF-8")
-            ),
-            executionEnvironment(
-                this.mavenSession,
-                this.pluginManager
-            )
-        );
-
-        executeMojo(
-            plugin(
-                groupId("org.apache.maven.plugins"),
-                artifactId("maven-compiler-plugin"),
-                version("3.6.1")
-            ),
-            goal("testCompile"),
-            configuration(
-                element(name("encoding"), "UTF-8")
-            ),
-            executionEnvironment(
-                this.mavenSession,
-                this.pluginManager
-            )
-        );
-
-        executeMojo(
-            plugin(
-                groupId("org.apache.maven.plugins"),
-                artifactId("maven-surefire-plugin"),
-                version("2.20")
-            ),
-            goal("test"),
-            configuration(
-                element(name("argLine"), "")
-            ),
-            executionEnvironment(
-                this.mavenSession,
-                this.pluginManager
-            )
-        );
-
-//        executeMojo(
-//            plugin(
-//                groupId("org.apache.maven.plugins"),
-//                artifactId("maven-dependency-plugin"),
-//                version("3.0.1")
-//            ),
-//            goal("copy-dependencies"),
-//            configuration(
-//                element(name("outputDirectory"), "target/dependencies")
-//            ),
-//            executionEnvironment(
-//                mavenSession,
-//                pluginManager
-//            )
-//        );
+        sourceCompiler.compile();
+        testCompiler.compile();
+        runner.run();
 //        FileSystemWatcher watcher = new FileSystemWatcher(super.getLog());
 //        watcher.watch("./src");
 //        watcher.startWatching();
