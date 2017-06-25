@@ -85,26 +85,42 @@ public class RunMojo extends AbstractMojo {
                 element(name("encoding"), "UTF-8")
             ),
             executionEnvironment(
-                this.mavenProject,
                 this.mavenSession,
                 this.pluginManager
             )
         );
 
-//        executeMojo(
-//            plugin(
-//                groupId("org.apache.maven.plugins"),
-//                artifactId("maven-surefire-plugin"),
-//                version("2.20")
-//            ),
-//            goal("test"),
-//            configuration((MojoExecutor.Element) null),
-//            executionEnvironment(
-//                this.mavenProject,
-//                this.mavenSession,
-//                this.pluginManager
-//            )
-//        );
+        executeMojo(
+            plugin(
+                groupId("org.apache.maven.plugins"),
+                artifactId("maven-compiler-plugin"),
+                version("3.6.1")
+            ),
+            goal("testCompile"),
+            configuration(
+                element(name("encoding"), "UTF-8")
+            ),
+            executionEnvironment(
+                this.mavenSession,
+                this.pluginManager
+            )
+        );
+
+        executeMojo(
+            plugin(
+                groupId("org.apache.maven.plugins"),
+                artifactId("maven-surefire-plugin"),
+                version("2.20")
+            ),
+            goal("test"),
+            configuration(
+                element(name("argLine"), "")
+            ),
+            executionEnvironment(
+                this.mavenSession,
+                this.pluginManager
+            )
+        );
 
 //        executeMojo(
 //            plugin(
