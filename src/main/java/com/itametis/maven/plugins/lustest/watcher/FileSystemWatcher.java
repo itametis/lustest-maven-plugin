@@ -4,6 +4,9 @@
  */
 package com.itametis.maven.plugins.lustest.watcher;
 
+import com.itametis.maven.plugins.lustest.task.SourceCompiler;
+import com.itametis.maven.plugins.lustest.task.TestCompiler;
+import com.itametis.maven.plugins.lustest.task.TestRunner;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -14,6 +17,7 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.HashMap;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 
 
@@ -70,8 +74,15 @@ public class FileSystemWatcher {
 
     /**
      * Starts the file system watcher.
+     *
+     * @param sourceCompiler
+     *                       Instance knowing how to compile sources.
+     * @param testCompiler
+     *                       Instance knowing how to compile tests.
+     * @param runner
+     *                       Instance knowing how to run unit tests.
      */
-    public void startWatching() {
+    public void startWatching(SourceCompiler sourceCompiler, TestCompiler testCompiler, TestRunner runner) {
         if (!this.isRunning) {
 
             this.isRunning = true;
@@ -85,10 +96,11 @@ public class FileSystemWatcher {
                     for (WatchEvent<?> event : key.pollEvents()) {
                         Path child = this.getChangedChild(current, event);
 
-                        // print out event
-                        System.out.format("%s: %s\n", event.kind().name(), child);
-
-                        this.addCreatedFiles(event, child);
+                        if (this.isFileEventNeverHandledBefore(event)) {
+//                            System.out.format("%s: %s\n", event.kind().name(), child);
+                            this.processFile(sourceCompiler, testCompiler, runner, child);
+                            this.addCreatedFiles(event, child);
+                        }
                     }
 
                     if (this.isFileRemoved(key)) {
@@ -186,6 +198,11 @@ public class FileSystemWatcher {
     }
 
 
+    private boolean isFileEventNeverHandledBefore(WatchEvent<?> event) {
+        return event.count() == 1;
+    }
+
+
     private boolean isFileRemoved(WatchKey key) {
         return !key.reset();
     }
@@ -193,6 +210,20 @@ public class FileSystemWatcher {
 
     private boolean isRegisteredKey(Path file) {
         return file != null;
+    }
+
+
+    private void processFile(SourceCompiler sourceCompiler, TestCompiler testCompiler, TestRunner runner, Path path) {
+        if (!Files.isDirectory(path)) {
+            try {
+                sourceCompiler.compile();
+                testCompiler.compile();
+                runner.run();
+            }
+            catch (MojoExecutionException ex) {
+                this.mavenLogger.debug("Error while executing compilation mojo : ", ex);
+            }
+        }
     }
 
 

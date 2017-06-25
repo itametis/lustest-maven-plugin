@@ -7,6 +7,7 @@ package com.itametis.maven.plugins.lustest.mojos;
 import com.itametis.maven.plugins.lustest.task.SourceCompiler;
 import com.itametis.maven.plugins.lustest.task.TestCompiler;
 import com.itametis.maven.plugins.lustest.task.TestRunner;
+import com.itametis.maven.plugins.lustest.watcher.FileSystemWatcher;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.BuildPluginManager;
@@ -56,13 +57,24 @@ public class RunMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         SourceCompiler sourceCompiler = new SourceCompiler(this.mavenSession, this.pluginManager, this.sourceEncoding, this.mavenCompilerVersion);
         TestCompiler testCompiler = new TestCompiler(this.mavenSession, this.pluginManager, this.sourceEncoding, this.mavenCompilerVersion);
-        TestRunner runner = new TestRunner(this.mavenSession, this.pluginManager, this.mavenSurefireVersion);
+        TestRunner runner = new TestRunner(this.mavenSession, this.pluginManager, this.mavenProject, this.mavenSurefireVersion);
 
-        sourceCompiler.compile();
-        testCompiler.compile();
-        runner.run();
-//        FileSystemWatcher watcher = new FileSystemWatcher(super.getLog());
-//        watcher.watch("./src");
-//        watcher.startWatching();
+        this.processFirstBuild(sourceCompiler, testCompiler, runner);
+
+        FileSystemWatcher watcher = new FileSystemWatcher(super.getLog());
+        watcher.watch("./src");
+        watcher.startWatching(sourceCompiler, testCompiler, runner);
+    }
+
+
+    private void processFirstBuild(SourceCompiler sourceCompiler, TestCompiler testCompiler, TestRunner runner) {
+        try {
+            sourceCompiler.compile();
+            testCompiler.compile();
+            runner.run();
+        }
+        catch (MojoExecutionException ex) {
+            super.getLog().debug("Error while executing compilation mojo : ", ex);
+        }
     }
 }
