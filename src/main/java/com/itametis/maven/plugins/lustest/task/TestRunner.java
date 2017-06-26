@@ -14,7 +14,6 @@ package com.itametis.maven.plugins.lustest.task;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
 
 import static org.twdata.maven.mojoexecutor.MojoExecutor.artifactId;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;
@@ -40,15 +39,12 @@ public class TestRunner {
 
     private final String mavenSurefireVersion;
 
-    private final MavenProject mavenProject;
-
     private int nbRuns = 0;
 
 
-    public TestRunner(MavenSession mavenSession, BuildPluginManager pluginManager, MavenProject mavenProject, String mavenSurefireVersion) {
+    public TestRunner(MavenSession mavenSession, BuildPluginManager pluginManager, String mavenSurefireVersion) {
         this.mavenSession = mavenSession;
         this.pluginManager = pluginManager;
-        this.mavenProject = mavenProject;
         this.mavenSurefireVersion = mavenSurefireVersion;
     }
 
