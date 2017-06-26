@@ -18,7 +18,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
 
 
 /**
@@ -70,12 +69,11 @@ public class RunMojo extends AbstractMojo {
     /**
      * The current Maven project object. Not used yet but it will for legacy purpose.
      */
-    @Parameter(
-        defaultValue = "${project}",
-        readonly = true
-    )
-    private MavenProject mavenProject;
-
+//    @Parameter(
+//        defaultValue = "${project}",
+//        readonly = true
+//    )
+//    private MavenProject mavenProject;
     /**
      * The current Maven session (to get the current Maven instance and to avoid the creation of new one for each run).
      */
