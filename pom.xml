@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-/* This file is part of LUSTEST.
- *
- * LUSTEST is free software: you can redistribute it and/or modify
- * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * LUSTEST is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with LUSTEST.  If not, see <http://www.gnu.org/licenses/gpl.txt>.
- *
- * If you need to develop a closed-source software, please contact us
- * at 'social@itametis.com' to get a commercial version of LUSTEST,
- * with a proprietary license instead.
- *
- * @author <a href="mailto:social@itametis.com">social@itametis.com</a>
- */
+ This file is part of LUSTEST.
+ 
+ LUSTEST is free software: you can redistribute it and/or modify
+ it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ LUSTEST is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with LUSTEST.  If not, see <http://www.gnu.org/licenses/gpl.txt>.
+ 
+ If you need to develop a closed-source software, please contact us
+ at 'social@itametis.com' to get a commercial version of LUSTEST,
+ with a proprietary license instead.
+ 
+ @author <a href="mailto:social@itametis.com">social@itametis.com</a>
 -->
 <project    xmlns="http://maven.apache.org/POM/4.0.0"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -30,7 +29,7 @@
 
     <groupId>com.itametis.maven.plugins</groupId>
     <artifactId>lustest-maven-plugin</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1-SNAPSHOT</version>
 
     <packaging>maven-plugin</packaging>
     <name>${project.artifactId}</name>
@@ -40,6 +39,20 @@
         then executes the unit tests. This bring on Maven a basic feature of Gradle which is truly missing. Have fun !
     </description>
 
+    <url>https://github.com/itametis/lustest-maven-plugin</url>
+ 
+    <licenses>
+        <license>
+            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3</name>
+            <url>https://www.gnu.org/licenses/agpl.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/itametis/lustest-maven-plugin.git</url>
+    </scm>
+    
     <properties>
         <!-- Compiler properties -->
         <maven.compiler.source>1.8</maven.compiler.source>
