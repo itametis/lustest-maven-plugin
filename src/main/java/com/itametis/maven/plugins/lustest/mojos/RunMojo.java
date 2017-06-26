@@ -40,7 +40,7 @@ public class RunMojo extends AbstractMojo {
         defaultValue = "src",
         readonly = true
     )
-    private String[] folderToWatch;
+    private String[] foldersToWatch;
 
     /**
      * The encoding of your sources. By default 'UTF-8' is used.
@@ -121,7 +121,7 @@ public class RunMojo extends AbstractMojo {
 
     private void addWatchedFolder(FileSystemWatcher watcher) {
         super.getLog().info("Watched folder :");
-        for (String folder : this.folderToWatch) {
+        for (String folder : this.foldersToWatch) {
             super.getLog().info("    - " + folder);
             watcher.watch(folder);
         }
