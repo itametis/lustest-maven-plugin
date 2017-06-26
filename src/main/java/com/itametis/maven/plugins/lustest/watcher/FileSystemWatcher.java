@@ -4,6 +4,7 @@
  */
 package com.itametis.maven.plugins.lustest.watcher;
 
+import com.itametis.maven.plugins.lustest.event.TimeMaster;
 import com.itametis.maven.plugins.lustest.task.SourceCompiler;
 import com.itametis.maven.plugins.lustest.task.TestCompiler;
 import com.itametis.maven.plugins.lustest.task.TestRunner;
@@ -86,6 +87,7 @@ public class FileSystemWatcher {
         if (!this.isRunning) {
 
             this.isRunning = true;
+            TimeMaster timeMaster = new TimeMaster();
 
             while (this.isRunning) {
                 // wait for key to be signalled
@@ -96,10 +98,12 @@ public class FileSystemWatcher {
                     for (WatchEvent<?> event : key.pollEvents()) {
                         Path child = this.getChangedChild(current, event);
 
-                        if (this.isFileEventNeverHandledBefore(event)) {
-//                            System.out.format("%s: %s\n", event.kind().name(), child);
-                            this.processFile(sourceCompiler, testCompiler, runner, child);
+                        String eventFilePath = child.toString();
+
+                        if (this.isFileEventNeverHandledBefore(event) && timeMaster.hasToRebuild(eventFilePath)) {
                             this.addCreatedFiles(event, child);
+                            this.processFile(sourceCompiler, testCompiler, runner, child);
+                            timeMaster.updateTimeStamp(eventFilePath);
                         }
                     }
 

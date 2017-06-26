@@ -37,11 +37,12 @@ public class RunMojo extends AbstractMojo {
     /**
      * Contains the list of folders to watch. If empty watches recursively the folder './src' by default.
      */
-//    @Parameter(
-//        defaultValue = "./src",
-//        readonly = true
-//    )
-//    private List<String> folderToWatch;
+    @Parameter(
+        defaultValue = "src",
+        readonly = true
+    )
+    private String[] folderToWatch;
+
     /**
      * The encoding of your sources. By default 'UTF-8' is used.
      */
@@ -103,8 +104,7 @@ public class RunMojo extends AbstractMojo {
 
         // Start the watching mod :
         FileSystemWatcher watcher = new FileSystemWatcher(super.getLog());
-//        this.addWatchedFolder(watcher);
-        watcher.watch("./src");
+        this.addWatchedFolder(watcher);
         watcher.startWatching(sourceCompiler, testCompiler, runner);
     }
 
@@ -120,9 +120,12 @@ public class RunMojo extends AbstractMojo {
         }
     }
 
-//    private void addWatchedFolder(FileSystemWatcher watcher) {
-//        for (String folder : this.folderToWatch) {
-//            System.out.println("FOLDER : " + folder);
-//        }
-//    }
+
+    private void addWatchedFolder(FileSystemWatcher watcher) {
+        super.getLog().info("Watched folder :");
+        for (String folder : this.folderToWatch) {
+            super.getLog().info("    - " + folder);
+            watcher.watch(folder);
+        }
+    }
 }
