@@ -57,7 +57,7 @@ public class TestRunner {
             ),
             goal("test"),
             configuration(
-                // 'nbRuns++' is kept in the case where the removing of previous execution does not work :
+                // 'nbRuns++' is kept when the removing of previous Surefire execution does not work
                 element(name("argLine"), "-DnbLustestRuns=" + this.nbRuns++)
             ),
             executionEnvironment(
@@ -82,11 +82,11 @@ public class TestRunner {
 
 
     /**
-     * Removes the Surefire hash of just executed build. The reason is Surefire generate a hash each time it is executed
-     * in order to prevent multiple executions of Surefire. But in our case, we need to execute Surefire multiple times
-     * in the same Maven instance. So if we let Surefire adding hashes to the Maven plug-in context {@link Map}, it
-     * risks to produce an {@link OutOfMemoryError} (ok, the risk is very very small but it's still a risk). That's why
-     * we have to delete the hash.
+     * Removes the Surefire hash of just executed build. The reason is Surefire generates a hash each time it is
+     * executed in order to prevent multiple executions of itself in the same Maven instance. But in our case, we need
+     * to execute Surefire multiple times in the same Maven instance. So if we let Surefire adding hashes to the Maven
+     * plug-in context {@link Map}, it risks to produce an {@link OutOfMemoryError} (ok, the risk is very very small
+     * because it requires a million of save but it's still a bad practice); that's why we have to delete the hash.
      */
     private void removePreviousExecutionFromSurefireHistory() {
         Map<String, Object> context = this.mavenSession.getPluginContext(

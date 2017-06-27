@@ -100,7 +100,7 @@ public class FileSystemWatcher {
 
                         String eventFilePath = child.toString();
 
-                        if (this.isFileEventNeverHandledBefore(event) && timeMaster.hasToRebuild(eventFilePath)) {
+                        if (this.isFileEventNeverHandledBefore(event) && timeMaster.hasToReplayProcess(eventFilePath)) {
                             this.addCreatedFiles(event, child);
                             this.processFile(sourceCompiler, testCompiler, runner, child);
                             timeMaster.updateTimeStamp(eventFilePath);

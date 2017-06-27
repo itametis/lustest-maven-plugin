@@ -21,6 +21,7 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.version;
 
 
 /**
+ * This class will execute the maven-compiler-plugin in incremental mode.
  *
  * @author ITAMETIS ©
  */
@@ -63,5 +64,4 @@ public class Compiler {
             )
         );
     }
-
 }

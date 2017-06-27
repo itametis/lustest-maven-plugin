@@ -21,7 +21,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 
 
 /**
- * Start the watching service.
+ * Starts the watching service.
  *
  * @author © ITAMETIS
  */
@@ -45,7 +45,10 @@ public class RunMojo extends AbstractMojo {
     /**
      * The encoding of your sources. By default 'UTF-8' is used.
      */
-    @Parameter
+    @Parameter(
+        defaultValue = "UTF-8",
+        readonly = true
+    )
     private String sourceEncoding;
 
     /**
@@ -53,7 +56,8 @@ public class RunMojo extends AbstractMojo {
      * should define it in your pom). If version is specified, this plug-in will use the 3.6.1.
      */
     @Parameter(
-        defaultValue = "3.6.1"
+        defaultValue = "3.6.1",
+        readonly = true
     )
     private String mavenCompilerVersion;
 
@@ -62,13 +66,14 @@ public class RunMojo extends AbstractMojo {
      * should define it in your pom). If version is specified, this plug-in will use the 2.20.
      */
     @Parameter(
-        defaultValue = "2.20"
+        defaultValue = "2.20",
+        readonly = true
     )
     private String mavenSurefireVersion;
 
-    /**
-     * The current Maven project object. Not used yet but it will for legacy purpose.
-     */
+//    /**
+//     * The current Maven project object. Not used yet but it will for legacy purpose.
+//     */
 //    @Parameter(
 //        defaultValue = "${project}",
 //        readonly = true
