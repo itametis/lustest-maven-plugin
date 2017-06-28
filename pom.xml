@@ -138,23 +138,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Test-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${version.surefire}</version>
-            </plugin>
-
-            <!-- Execution -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <configuration>
-                    <mainClass>${project.groupId}.lustest.Main</mainClass>
-                </configuration>
-            </plugin>
-
             <!-- Packaging -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -208,7 +191,14 @@
                 <version>3.0.4</version>
             </plugin>
 
-            <!-- Test the plugin with the plugin -->
+            <!-- Test-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${version.surefire}</version>
+            </plugin>
+
+            <!-- Test & Develop Lustest with Lustest... LUSTESTCEPTION WOUH WOUH !!! -->
             <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>${project.artifactId}</artifactId>
@@ -225,4 +215,20 @@
             </plugin>
         </plugins>
     </build>
+
+    <developers>
+        <developer>
+            <id>davy.claisse</id>
+            <email>social@itametis.com</email>
+            <name>Davy CLAISSE</name>
+            <organization>ITAMETIS</organization>
+            <organizationUrl>http://www.itametis.com</organizationUrl>
+            <roles>
+                <role>Lead Developer</role>
+                <role>Lustest User</role>
+            </roles>
+            <timezone>2</timezone>
+            <url>http://university.itametis.com/?pages/contact/davy-claisse</url>
+        </developer>
+    </developers>
 </project>
