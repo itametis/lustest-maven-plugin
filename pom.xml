@@ -138,7 +138,6 @@
                 </configuration>
             </plugin>
 
-
             <!-- Test-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -215,6 +214,10 @@
                 <artifactId>${project.artifactId}</artifactId>
                 <version>${project.version}</version>
                 <configuration>
+                    <foldersToWatch>
+                        <param>src/main/java/</param>
+                        <param>src/test/java/</param>
+                    </foldersToWatch>
                     <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
                     <mavenCompilerVersion>${version.mavenCompiler}</mavenCompilerVersion>
                     <mavenSurefireVersion>${version.surefire}</mavenSurefireVersion>
