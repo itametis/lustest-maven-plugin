@@ -20,7 +20,7 @@ public class TimeMaster {
     /**
      * The minimum (in milliseconds) to wait before it is possible to run another build process.
      */
-    private static final long MIN_DURATION_BETWEEN_TWO_BUILDS = 500;
+    static final long MIN_DURATION_BETWEEN_TWO_BUILDS = 500;
 
     /**
      * By default, this plug-in expects to watch up-to 512 files (but this value increase if necessary).
@@ -53,9 +53,15 @@ public class TimeMaster {
      * @return true if the Lustest's process has to be replay.
      */
     public boolean hasToReplayProcess(String file) {
-        Long lastTimeStamp = this.events.get(file);
+        boolean res = this.isValidFileFormat(file);
 
-        return lastTimeStamp == null || this.hasToRebuild(lastTimeStamp);
+        if (res) {
+            Long lastTimeStamp = this.events.get(file);
+
+            res = lastTimeStamp == null || this.hasToRebuild(lastTimeStamp);
+        }
+
+        return res;
     }
 
 
@@ -68,5 +74,10 @@ public class TimeMaster {
         long elapsedTime = System.currentTimeMillis() - lastTimeStamp;
 
         return MIN_DURATION_BETWEEN_TWO_BUILDS < elapsedTime;
+    }
+
+
+    private boolean isValidFileFormat(String file) {
+        return file != null && !file.isEmpty();
     }
 }
