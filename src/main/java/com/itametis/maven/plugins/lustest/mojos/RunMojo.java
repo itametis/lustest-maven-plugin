@@ -89,7 +89,7 @@ public class RunMojo extends AbstractMojo {
     private MavenSession mavenSession;
 
     /**
-     * Plugin used by MojoExecutor to run others plug-ins from this one.
+     * Plug-in used by MojoExecutor to run others plug-ins from this one.
      */
     @Component
     private BuildPluginManager pluginManager;
@@ -125,10 +125,29 @@ public class RunMojo extends AbstractMojo {
 
 
     private void addWatchedFolder(FileSystemWatcher watcher) {
-        super.getLog().info("Watched folder :");
+        super.getLog().info("Watched folders :");
         for (String folder : this.foldersToWatch) {
             super.getLog().info("    - " + folder);
             watcher.watch(folder);
         }
     }
+
+// BACKUP :
+// Scan the content of MavenProject object. Kept here until implementation of multi-module management implementation.
+//        System.out.println("============================================================================");
+//        this.mavenSession.getProjects().forEach(
+//            (MavenProject m) -> {
+//                try {
+//                    System.out.println("Maven Project : " + m);
+//                    System.out.println("    - Packaging : " + m.getPackaging());
+//                    System.out.println("    - URL : " + m.getUrl());
+//                    System.out.println("    - Name : " + m.getName());
+//                    System.out.println("    - Base dir : " + m.getBasedir());
+//                }
+//                catch (Throwable ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+//        );
+//        System.out.println("============================================================================");
 }
