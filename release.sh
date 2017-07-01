@@ -1,3 +1,2 @@
 #!/usr/bin/env bash
-mvn release:prepare
-mvn release:perform
+mvn --batch-mode release:prepare release:perform
