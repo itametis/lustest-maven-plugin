@@ -34,25 +34,8 @@
     <packaging>maven-plugin</packaging>
     <name>${project.artifactId}</name>
 
-    <description>
-        Lustest is a Maven plugin which watches the changes made on the sources and recompiles only the modified files
-        then executes the unit tests. This bring on Maven a basic feature of Gradle which is truly missing. Have fun !
-    </description>
 
-    <url>https://github.com/itametis/lustest-maven-plugin</url>
-
-    <licenses>
-        <license>
-            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3</name>
-            <url>https://www.gnu.org/licenses/agpl.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <scm>
-        <url>https://github.com/itametis/lustest-maven-plugin.git</url>
-    </scm>
-
+    <!-- Variables of project -->
     <properties>
         <!-- Compiler properties -->
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -66,9 +49,43 @@
         <project.encoding>UTF-8</project.encoding>
         <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
+
+        <!-- Project URL -->
+        <github.url>itametis/lustest-maven-plugin.git</github.url>
     </properties>
 
 
+    <!-- Legal / Description / Contact -->
+    <description>
+        Lustest is a Maven plugin which watches the changes made on the sources and recompiles only the modified files
+        then executes the unit tests. This bring on Maven a basic feature of Gradle which is truly missing. Have fun !
+    </description>
+
+
+    <licenses>
+        <license>
+            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3</name>
+            <url>https://www.gnu.org/licenses/agpl.txt</url>
+            <distribution>repo</distribution>
+            <comments>Lustest is also sold under commercial license for closed sources software</comments>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>ITAMETIS</name>
+        <url>https://www.itametis.com</url>
+    </organization>
+
+    <scm>
+        <url>https://github.com/${github.url}</url>
+        <connection>scm:git:git://github.com/${github.url}</connection>
+        <developerConnection>scm:git:git@github.com:github.com/${github.url}</developerConnection>
+    </scm>
+
+    <url>https://github.com/itametis/lustest-maven-plugin</url>
+
+
+    <!-- DEPENDENCIES / PLUGINS / BUILD -->
     <dependencies>
         <!-- Dependencies to create maven plugin -->
         <dependency>
