@@ -51,38 +51,9 @@
         <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
 
         <!-- Project URL -->
-        <github.url>itametis/lustest-maven-plugin.git</github.url>
+        <lustest.url>https://github.com/itametis/lustest-maven-plugin</lustest.url>
+        <scm.url>scm:git:${lustest.url}.git</scm.url>
     </properties>
-
-
-    <!-- Legal / Description / Contact -->
-    <description>
-        Lustest is a Maven plugin which watches the changes made on the sources and recompiles only the modified files
-        then executes the unit tests. This bring on Maven a basic feature of Gradle which is truly missing. Have fun !
-    </description>
-
-
-    <licenses>
-        <license>
-            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3</name>
-            <url>https://www.gnu.org/licenses/agpl.txt</url>
-            <distribution>repo</distribution>
-            <comments>Lustest is also sold under commercial license for closed sources software</comments>
-        </license>
-    </licenses>
-
-    <organization>
-        <name>ITAMETIS</name>
-        <url>https://www.itametis.com</url>
-    </organization>
-
-    <scm>
-        <url>https://github.com/${github.url}</url>
-        <connection>scm:git:git://github.com/${github.url}</connection>
-        <developerConnection>scm:git:git@github.com:github.com/${github.url}</developerConnection>
-    </scm>
-
-    <url>https://github.com/itametis/lustest-maven-plugin</url>
 
 
     <!-- DEPENDENCIES / PLUGINS / BUILD -->
@@ -129,6 +100,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
 
     <build>
         <plugins>
@@ -233,13 +205,19 @@
         </plugins>
     </build>
 
+    <!-- Legal / Description / Contact -->
+    <description>
+        Lustest is a Maven plugin which watches the changes made on the sources and recompiles only the modified files
+        then executes the unit tests. This bring on Maven a basic feature of Gradle which is truly missing. Have fun !
+    </description>
+
     <developers>
         <developer>
             <id>davy.claisse</id>
             <email>social@itametis.com</email>
             <name>Davy CLAISSE</name>
             <organization>ITAMETIS</organization>
-            <organizationUrl>http://www.itametis.com</organizationUrl>
+            <organizationUrl>https://www.itametis.com</organizationUrl>
             <roles>
                 <role>Lead Developer</role>
                 <role>Lustest User</role>
@@ -248,4 +226,35 @@
             <url>http://university.itametis.com/?pages/contact/davy-claisse</url>
         </developer>
     </developers>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/itametis/lustest-maven-plugin/issues</url>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3</name>
+            <url>https://www.gnu.org/licenses/agpl.txt</url>
+            <distribution>repo</distribution>
+            <comments>Lustest is also sold under commercial license for closed sources software</comments>
+        </license>
+    </licenses>
+
+
+    <organization>
+        <name>ITAMETIS</name>
+        <url>https://www.itametis.com</url>
+    </organization>
+
+
+    <scm>
+        <connection>${scm.url}</connection>
+        <developerConnection>${scm.url}</developerConnection>
+        <tag>HEAD</tag>
+        <url>${lustest.url}</url>
+    </scm>
+
+
+    <url>${lustest.url}</url>
 </project>
