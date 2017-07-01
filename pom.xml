@@ -227,6 +227,21 @@
         </developer>
     </developers>
 
+
+    <distributionManagement>
+        <repository>
+            <id>ossrh-releases</id>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+            <name>Maven Central Repository (releases)</name>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <name>Maven Central Repository (snapshots)</name>
+        </snapshotRepository>
+    </distributionManagement>
+
+
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/itametis/lustest-maven-plugin/issues</url>
